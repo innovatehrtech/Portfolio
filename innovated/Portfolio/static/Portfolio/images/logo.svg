@@ -1,0 +1,11 @@
+<svg width="200" height="50" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
+  <!-- Icon -->
+  <circle cx="20" cy="25" r="12" fill="#1a365d"/>
+  <path d="M15 20 L20 30 L25 20" stroke="white" stroke-width="2" fill="none"/>
+  
+  <!-- Aparajitha text -->
+  <text x="40" y="32" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1a365d">Aparajitha</text>
+  
+  <!-- Simpliance text -->
+  <text x="40" y="48" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#f97316">Simpliance</text>
+</svg>

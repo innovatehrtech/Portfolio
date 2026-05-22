@@ -1,0 +1,486 @@
+{% extends 'Portfolio/base.html' %}
+
+{% block title %}Search Results - InnovatedHRTECH{% endblock %}
+
+{% block content %}
+<style>
+    /* ================= SEARCH RESULTS PAGE STYLES ================= */
+    .search-results-container {
+        max-width: 1200px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    /* Page Header */
+    .search-header-box {
+        background: linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%);
+        border-radius: 16px;
+        padding: 40px;
+        color: white;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 25px rgba(109, 40, 217, 0.15);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .search-header-box::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 300px;
+        height: 300px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .search-header-box h1 {
+        font-size: 32px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .search-header-box p {
+        font-size: 16px;
+        opacity: 0.9;
+        margin-bottom: 25px;
+    }
+
+    .search-bar-inline {
+        display: flex;
+        background: white;
+        border-radius: 10px;
+        padding: 6px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 650px;
+        align-items: stretch;
+    }
+
+    .search-bar-inline input {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        outline: none;
+        padding: 10px 18px;
+        font-size: 16px;
+        color: #333;
+        border-radius: 8px 0 0 8px;
+    }
+
+    .search-bar-inline .search-btn-inline {
+        background: #7c3aed;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0 25px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
+    .search-bar-inline .search-btn-inline:hover {
+        background: #6d28d9;
+    }
+
+    /* Main Grid Layout */
+    .results-layout {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 30px;
+        align-items: start;
+    }
+
+    /* Sidebar Filter */
+    .results-sidebar {
+        background: white;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        padding: 24px;
+        position: sticky;
+        top: 90px;
+    }
+
+    .sidebar-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 18px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .category-filter-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .category-filter-item a {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 12px;
+        border-radius: 8px;
+        color: #4b5563;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    .category-filter-item a:hover,
+    .category-filter-item.active a {
+        background: #f5f3ff;
+        color: #7c3aed;
+    }
+
+    .category-count-badge {
+        background: #e0e7ff;
+        color: #4338ca;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-weight: 600;
+    }
+
+    .category-filter-item.active .category-count-badge {
+        background: #7c3aed;
+        color: white;
+    }
+
+    /* Results Panel */
+    .results-main {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .category-group-header {
+        font-size: 20px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        scroll-margin-top: 100px;
+    }
+
+    .category-group-header::before {
+        content: '';
+        display: inline-block;
+        width: 4px;
+        height: 20px;
+        background: #7c3aed;
+        border-radius: 2px;
+    }
+
+    .laws-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    /* Card styling */
+    .law-card {
+        background: white;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        padding: 24px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+    }
+
+    .law-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 20px rgba(109, 40, 217, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
+        border-color: #d8b4fe;
+    }
+
+    .law-card-category {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 600;
+        color: #7c3aed;
+        margin-bottom: 8px;
+        display: inline-block;
+    }
+
+    .law-card-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #111827;
+        line-height: 1.4;
+        margin-bottom: 12px;
+    }
+
+    .law-card-details {
+        font-size: 14px;
+        line-height: 1.6;
+        color: #4b5563;
+        margin-bottom: 20px;
+    }
+
+    .law-card-actions {
+        display: flex;
+        gap: 12px;
+        border-top: 1px solid #f3f4f6;
+        padding-top: 18px;
+        margin-top: auto;
+    }
+
+    .action-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .btn-official {
+        background: #f3f4f6;
+        color: #4b5563;
+        border: 1px solid #e5e7eb;
+    }
+
+    .btn-official:hover {
+        background: #e5e7eb;
+        color: #1f2937;
+    }
+
+    .btn-pdf {
+        background: #fef2f2;
+        color: #dc2626;
+        border: 1px solid #fee2e2;
+    }
+
+    .btn-pdf:hover {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 60px 40px;
+        background: white;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        grid-column: span 2;
+    }
+
+    .empty-state i {
+        font-size: 48px;
+        color: #9ca3af;
+        margin-bottom: 16px;
+    }
+
+    .empty-state h3 {
+        font-size: 20px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 8px;
+    }
+
+    .empty-state p {
+        font-size: 15px;
+        color: #6b7280;
+        margin-bottom: 24px;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .btn-clear-search {
+        display: inline-block;
+        background: #7c3aed;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .btn-clear-search:hover {
+        background: #6d28d9;
+    }
+
+    /* Responsive adjustments */
+    @media(max-width: 992px) {
+        .results-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .results-sidebar {
+            position: static;
+            padding: 16px;
+        }
+
+        .category-filter-list {
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .category-filter-item a {
+            padding: 6px 12px;
+        }
+    }
+
+    @media(max-width: 576px) {
+        .search-header-box {
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .search-header-box h1 {
+            font-size: 24px;
+        }
+        .search-header-box p {
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .search-bar-inline {
+            padding: 4px;
+        }
+        .search-bar-inline input {
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+        .search-bar-inline .search-btn-inline {
+            padding: 0 14px;
+            font-size: 14px;
+            gap: 0;
+        }
+        .search-bar-inline .search-btn-inline span {
+            display: none;
+        }
+    }
+</style>
+
+<div class="search-results-container">
+    <!-- Header Block -->
+    <div class="search-header-box">
+        <h1>Indian Labor Laws Directory</h1>
+        <p>Browse official department portals, download bare acts, and read statutory details</p>
+        
+        <form action="{% url 'search_laws' %}" method="GET" class="search-bar-inline">
+            <input type="text" name="q" placeholder="Search Act, Rules, key details..." value="{{ query }}">
+            <button type="submit" class="search-btn-inline">
+                <i class="fa-solid fa-magnifying-glass"></i> <span>Search</span>
+            </button>
+        </form>
+    </div>
+
+    <!-- Search Results Content -->
+    {% if categories_dict %}
+    <div class="results-layout">
+        <!-- Left Sidebar Filter -->
+        <aside class="results-sidebar">
+            <div class="sidebar-title">
+                <span>Categories</span>
+                <span class="category-count-badge" style="background:#7c3aed; color:white;">{{ results_count }}</span>
+            </div>
+            <ul class="category-filter-list">
+                <li class="category-filter-item active">
+                    <a href="#">
+                        <span>All Results</span>
+                    </a>
+                </li>
+                {% for category, laws in categories_dict.items %}
+                <li class="category-filter-item">
+                    <a href="#category-{{ forloop.counter }}">
+                        <span style="text-align: left; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            {{ category }}
+                        </span>
+                        <span class="category-count-badge">{{ laws|length }}</span>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </aside>
+
+        <!-- Right Main Panel -->
+        <main class="results-main">
+            {% for category, laws in categories_dict.items %}
+            <div id="category-{{ forloop.counter }}">
+                <h2 class="category-group-header">{{ category }}</h2>
+                <div class="laws-grid">
+                    {% for law in laws %}
+                    <div class="law-card">
+                        <div>
+                            <span class="law-card-category">{{ law.category }}</span>
+                            <h3 class="law-card-title">{{ law.name }}</h3>
+                            <p class="law-card-details">{{ law.key_details }}</p>
+                        </div>
+                        <div class="law-card-actions">
+                            <a href="{{ law.official_link }}" target="_blank" class="action-btn btn-official">
+                                <i class="fa-solid fa-globe"></i> Official Portal
+                            </a>
+                            <a href="{{ law.pdf_link }}" target="_blank" class="action-btn btn-pdf">
+                                <i class="fa-solid fa-file-pdf"></i> Download bare act (PDF)
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </main>
+    </div>
+    {% else %}
+    <!-- Empty State -->
+    <div class="empty-state">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <h3>No matching laws found</h3>
+        <p>We couldn't find any results for "{{ query }}". Try checking for typos or searching a different keyword.</p>
+        <a href="{% url 'search_laws' %}" class="btn-clear-search">View All Laws</a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    // Smooth scrolling for sidebar links
+    document.querySelectorAll('.category-filter-item a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            
+            // Mark active
+            document.querySelectorAll('.category-filter-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            this.parentElement.classList.add('active');
+
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

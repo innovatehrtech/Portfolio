@@ -1,0 +1,293 @@
+{% extends 'Portfolio/base.html' %}
+
+{% block title %}Products - InnovatedHRTECH{% endblock %}
+
+{% block content %}
+<style>
+    /* ================= PRODUCTS PAGE STYLES ================= */
+    .products-container {
+        max-width: 1200px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 60px 20px;
+    }
+
+    .products-hero {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 60px;
+    }
+
+    .products-hero h1 {
+        font-size: 40px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 20px;
+        line-height: 1.2;
+    }
+
+    .products-hero p {
+        font-size: 18px;
+        color: #4b5563;
+        line-height: 1.6;
+    }
+
+    /* Product Section Grid */
+    .product-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+        margin-bottom: 80px;
+        padding-bottom: 60px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .product-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .product-section.reverse {
+        direction: rtl;
+    }
+
+    .product-section.reverse .product-info {
+        direction: ltr;
+    }
+
+    .product-visual {
+        background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+        border-radius: 24px;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        min-height: 380px;
+        box-shadow: 0 4px 20px rgba(109, 40, 217, 0.05);
+        border: 1px solid #e0e7ff;
+    }
+
+    .product-visual i {
+        font-size: 120px;
+        color: #7c3aed;
+        transition: transform 0.4s ease;
+    }
+
+    .product-section:hover .product-visual i {
+        transform: scale(1.1) rotate(2deg);
+    }
+
+    .product-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-badge {
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #7c3aed;
+        margin-bottom: 12px;
+        display: inline-block;
+    }
+
+    .product-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 16px;
+    }
+
+    .product-description {
+        font-size: 16px;
+        color: #4b5563;
+        line-height: 1.7;
+        margin-bottom: 24px;
+    }
+
+    .product-features-list {
+        list-style: none;
+        margin-bottom: 30px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .product-feature-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        color: #374151;
+        font-weight: 500;
+    }
+
+    .product-feature-item i {
+        color: #10b981;
+        font-size: 16px;
+    }
+
+    .btn-product-demo {
+        align-self: flex-start;
+        background: #7c3aed;
+        color: white;
+        text-decoration: none;
+        padding: 12px 28px;
+        border-radius: 30px;
+        font-size: 15px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 12px rgba(109, 40, 217, 0.2);
+    }
+
+    .btn-product-demo:hover {
+        background: #6d28d9;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(109, 40, 217, 0.3);
+    }
+
+    /* Product visual icons colors */
+    .color-payprime i {
+        color: #0d9488;
+    }
+    .color-payprime {
+        background: linear-gradient(135deg, #f0fdf4 0%, #ccfbf1 100%);
+        border-color: #ccfbf1;
+    }
+
+    .color-guardgate i {
+        color: #ea580c;
+    }
+    .color-guardgate {
+        background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+        border-color: #ffedd5;
+    }
+
+    .color-poshshield i {
+        color: #db2777;
+    }
+    .color-poshshield {
+        background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
+        border-color: #fce7f3;
+    }
+
+    /* Responsive adjustments */
+    @media(max-width: 992px) {
+        .product-section, .product-section.reverse {
+            grid-template-columns: 1fr;
+            gap: 40px;
+            direction: ltr;
+        }
+
+        .products-hero h1 {
+            font-size: 32px;
+        }
+
+        .product-title {
+            font-size: 26px;
+        }
+
+        .product-visual {
+            min-height: 280px;
+            padding: 20px;
+        }
+
+        .product-visual i {
+            font-size: 90px;
+        }
+
+        .product-features-list {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="products-container">
+    <!-- Hero Block -->
+    <div class="products-hero">
+        <span class="product-badge">Tech-Driven Governance</span>
+        <h1>HR Compliance & GRC Software Suite</h1>
+        <p>Eliminate manual audits, compute accurate statutory liabilities, and automate labor law filings with our cloud platforms.</p>
+    </div>
+
+    <!-- Product 1: Astra GRC Suite -->
+    <section class="product-section" id="astra-grc">
+        <div class="product-visual">
+            <i class="fa-solid fa-laptop-code"></i>
+        </div>
+        <div class="product-info">
+            <span class="product-badge">Audit & Compliance Management</span>
+            <h2 class="product-title">Astra GRC Suite</h2>
+            <p class="product-description">Astra GRC Suite provides companies with a comprehensive platform to oversee, manage, and verify statutory compliances. It serves as an audit preparation tool, ensuring you are audit-ready 365 days a year with real-time risk alerts and digital record tracking.</p>
+            <ul class="product-features-list">
+                <li class="product-feature-item"><i class="fa-solid fa-circle-check"></i> Pan-India Registry Check</li>
+                <li class="product-feature-item"><i class="fa-solid fa-circle-check"></i> Automated Compliance Alerts</li>
+                <li class="product-feature-item"><i class="fa-solid fa-circle-check"></i> Digital Document Audit Trail</li>
+                <li class="product-feature-item"><i class="fa-solid fa-circle-check"></i> Custom Risk Scoring</li>
+            </ul>
+            <a href="#" onclick="openPopup(); return false;" class="btn-product-demo">Request Demo →</a>
+        </div>
+    </section>
+
+    <!-- Product 2: PayPrime Engine -->
+    <section class="product-section reverse" id="payprime">
+        <div class="product-visual color-payprime">
+            <i class="fa-solid fa-calculator"></i>
+        </div>
+        <div class="product-info">
+            <span class="product-badge">Payroll Contribution Calculator</span>
+            <h2 class="product-title">PayPrime Engine</h2>
+            <p class="product-description">Stop worrying about manual calculation mistakes. PayPrime calculates ESI, Provident Fund (EPF), Professional Tax (PT), and Labor Welfare Fund (LWF) contributions instantly across different state models and wages, generating flawless payroll reports.</p>
+            <ul class="product-features-list">
+                <li class="product-feature-item"><i class="fa-solid fa-circle-check"></i> Automatic PF/ESI Deductions</li>
+                <li class="product-feature-item"><i class="fa-solid fa-circle-check"></i> Multi-State Tax Rules</li>
+                <li class="product-feature-item"><i class="fa-solid fa-circle-check"></i> One-Click Challan Prep</li>
+                <li class="product-feature-item"><i class="fa-solid fa-circle-check"></i> Error Reconciliation</li>
+            </ul>
+            <a href="#" onclick="openPopup(); return false;" class="btn-product-demo" style="background:#0d9488; box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);">Request Demo →</a>
+        </div>
+    </section>
+
+    <!-- Product 3: GuardGate Portal -->
+    <section class="product-section" id="guardgate">
+        <div class="product-visual color-guardgate">
+            <i class="fa-solid fa-users-gear"></i>
+        </div>
+        <div class="product-info">
+            <span class="product-badge">Contractor Risk Mitigation</span>
+            <h2 class="product-title">GuardGate Contractor Portal</h2>
+            <p class="product-description">Manage and monitor contractor labor compliance. GuardGate helps principal employers track license expirations, verify statutory filings (challans, ECRs, registers), and prevent co-employer liability issues with third-party vendors.</p>
+            <ul class="product-features-list">
+                <li class="product-feature-item"><i class="fa-solid fa-circle-check"></i> Vendor License Tracker</li>
+                <li class="product-feature-item"><i class="fa-solid fa-circle-check"></i> Monthly Challan Audit</li>
+                <li class="product-feature-item"><i class="fa-solid fa-circle-check"></i> Gate Pass Authorization</li>
+                <li class="product-feature-item"><i class="fa-solid fa-circle-check"></i> Statutory Wage Checks</li>
+            </ul>
+            <a href="#" onclick="openPopup(); return false;" class="btn-product-demo" style="background:#ea580c; box-shadow: 0 4px 12px rgba(234, 88, 12, 0.2);">Request Demo →</a>
+        </div>
+    </section>
+
+    <!-- Product 4: POSH Shield -->
+    <section class="product-section reverse" id="poshshield">
+        <div class="product-visual color-poshshield">
+            <i class="fa-solid fa-user-shield"></i>
+        </div>
+        <div class="product-info">
+            <span class="product-badge">POSH Act Compliance training</span>
+            <h2 class="product-title">POSH Shield</h2>
+            <p class="product-description">Ensure your organization complies with the POSH Act 2013. POSH Shield offers interactive e-learning modules for employees, sensitization assessments, and specialized training dashboards for your Internal Complaints Committee (ICC).</p>
+            <ul class="product-features-list">
+                <li class="product-feature-item"><i class="fa-solid fa-circle-check"></i> Interactive Video Training</li>
+                <li class="product-feature-item"><i class="fa-solid fa-circle-check"></i> Sensitization Assessments</li>
+                <li class="product-feature-item"><i class="fa-solid fa-circle-check"></i> ICC Case Log Tracker</li>
+                <li class="product-feature-item"><i class="fa-solid fa-circle-check"></i> Automated Certifications</li>
+            </ul>
+            <a href="#" onclick="openPopup(); return false;" class="btn-product-demo" style="background:#db2777; box-shadow: 0 4px 12px rgba(219, 39, 119, 0.2);">Request Demo →</a>
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,456 @@
+{% extends 'Portfolio/base.html' %}
+
+{% block title %}Resources - InnovatedHRTECH{% endblock %}
+
+{% block content %}
+<style>
+    /* ================= RESOURCES PAGE STYLES ================= */
+    .resources-container {
+        max-width: 1200px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 60px 20px;
+    }
+
+    .resources-hero {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 50px;
+    }
+
+    .resources-hero h1 {
+        font-size: 40px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 20px;
+    }
+
+    .resources-hero p {
+        font-size: 18px;
+        color: #4b5563;
+        line-height: 1.6;
+    }
+
+    /* Section styling */
+    .resource-section {
+        margin-bottom: 80px;
+        scroll-margin-top: 100px;
+    }
+
+    .section-title-box {
+        margin-bottom: 30px;
+        border-left: 5px solid #7c3aed;
+        padding-left: 15px;
+    }
+
+    .section-title-box h2 {
+        font-size: 28px;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 8px;
+    }
+
+    .section-title-box p {
+        font-size: 15px;
+        color: #6b7280;
+    }
+
+    /* 1. Compliance Calendar Table */
+    .calendar-table-wrapper {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid #e5e7eb;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    }
+
+    .calendar-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .calendar-table th {
+        background: #f9fafb;
+        color: #374151;
+        font-weight: 600;
+        font-size: 14px;
+        padding: 16px 20px;
+        border-bottom: 2px solid #e5e7eb;
+    }
+
+    .calendar-table td {
+        padding: 18px 20px;
+        border-bottom: 1px solid #e5e7eb;
+        font-size: 14px;
+        color: #4b5563;
+        vertical-align: middle;
+    }
+
+    .calendar-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .due-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fee2e2;
+        color: #b91c1c;
+        text-align: center;
+    }
+
+    .act-name-bold {
+        font-weight: 600;
+        color: #1f2937;
+        font-size: 15px;
+    }
+
+    /* 2. Guides Grid */
+    .guides-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+    }
+
+    .guide-card {
+        background: white;
+        border-radius: 14px;
+        border: 1px solid #e5e7eb;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: all 0.3s ease;
+    }
+
+    .guide-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        border-color: #c084fc;
+    }
+
+    .guide-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        background: #f3e8ff;
+        color: #7c3aed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .guide-card h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 12px;
+    }
+
+    .guide-card p {
+        font-size: 14px;
+        color: #6b7280;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+    .btn-download-guide {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: #f3f4f6;
+        color: #374151;
+        border: 1px solid #e5e7eb;
+        padding: 10px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+    .guide-card:hover .btn-download-guide {
+        background: #7c3aed;
+        color: white;
+        border-color: #7c3aed;
+    }
+
+    /* 3. FAQ Accordion */
+    .faq-wrapper {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid #e5e7eb;
+        padding: 10px 24px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    }
+
+    .faq-item {
+        border-bottom: 1px solid #f3f4f6;
+        padding: 20px 0;
+    }
+
+    .faq-item:last-child {
+        border-bottom: none;
+    }
+
+    .faq-question {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1f2937;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        user-select: none;
+        transition: color 0.2s ease;
+    }
+
+    .faq-question:hover {
+        color: #7c3aed;
+    }
+
+    .faq-answer {
+        font-size: 14px;
+        color: #4b5563;
+        line-height: 1.6;
+        margin-top: 12px;
+        display: none;
+        padding-right: 30px;
+    }
+
+    .faq-item.active .faq-answer {
+        display: block;
+    }
+
+    .faq-item .faq-icon {
+        font-size: 14px;
+        color: #9ca3af;
+        transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-icon {
+        transform: rotate(180deg);
+        color: #7c3aed;
+    }
+
+    /* Responsive */
+    @media(max-width: 768px) {
+        .calendar-table th, .calendar-table td {
+            padding: 12px 14px;
+            font-size: 13px;
+        }
+        
+        .calendar-table tr {
+            display: flex;
+            flex-direction: column;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 10px 0;
+        }
+
+        .calendar-table td {
+            border: none;
+            padding: 4px 20px;
+        }
+
+        .calendar-table th {
+            display: none;
+        }
+
+        .calendar-table tr td:first-child {
+            padding-top: 10px;
+        }
+        
+        .calendar-table tr td:last-child {
+            padding-bottom: 10px;
+        }
+    }
+</style>
+
+<div class="resources-container">
+    <!-- Hero Block -->
+    <div class="resources-hero">
+        <h1>Statutory Compliance Resources</h1>
+        <p>Stay up to date with the latest statutory dates, read professional guides, and get quick answers to frequently asked legal queries.</p>
+    </div>
+
+    <!-- 1. Compliance Calendar -->
+    <section class="resource-section" id="calendar">
+        <div class="section-title-box">
+            <h2>Compliance Calendar 2026</h2>
+            <p>Important statutory deadlines and recurring filing dates under Central & State Labor Regulations</p>
+        </div>
+        
+        <div class="calendar-table-wrapper">
+            <table class="calendar-table">
+                <thead>
+                    <tr>
+                        <th>Due Date</th>
+                        <th>Statute / Regulation</th>
+                        <th>Applicable Form / Filing</th>
+                        <th>Filing Periodicity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="due-badge">15th of Every Month</span></td>
+                        <td><span class="act-name-bold">Employees' Provident Fund Act, 1952</span></td>
+                        <td>EPF Monthly Contribution & ECR Challan Submission</td>
+                        <td>Monthly</td>
+                    </tr>
+                    <tr>
+                        <td><span class="due-badge">15th of Every Month</span></td>
+                        <td><span class="act-name-bold">Employees' State Insurance Act, 1948</span></td>
+                        <td>ESI Monthly Premium Payment</td>
+                        <td>Monthly</td>
+                    </tr>
+                    <tr>
+                        <td><span class="due-badge">20th of Every Month</span></td>
+                        <td><span class="act-name-bold">Professional Tax Act (State-Specific)</span></td>
+                        <td>PT Payment & E-Return (e.g. Karnataka, Maharashtra)</td>
+                        <td>Monthly</td>
+                    </tr>
+                    <tr>
+                        <td><span class="due-badge">07th of Every Month</span></td>
+                        <td><span class="act-name-bold">Income Tax Act, 1961</span></td>
+                        <td>TDS Payment (Tax Deducted at Source)</td>
+                        <td>Monthly</td>
+                    </tr>
+                    <tr>
+                        <td><span class="due-badge">31st of Jan, Apr, Jul, Oct</span></td>
+                        <td><span class="act-name-bold">Income Tax Act, 1961</span></td>
+                        <td>Quarterly TDS Return Filing (Form 24Q & 26Q)</td>
+                        <td>Quarterly</td>
+                    </tr>
+                    <tr>
+                        <td><span class="due-badge">31st of January (Annual)</span></td>
+                        <td><span class="act-name-bold">Factories Act, 1948</span></td>
+                        <td>Submission of Form 22 (Annual Return)</td>
+                        <td>Annually</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 2. Guides & Ebooks -->
+    <section class="resource-section" id="guides">
+        <div class="section-title-box">
+            <h2>Downloadable Advisory Guides</h2>
+            <p>Checklists and step-by-step guides compiled by our compliance audit teams</p>
+        </div>
+
+        <div class="guides-grid">
+            <!-- Card 1 -->
+            <div class="guide-card">
+                <div>
+                    <div class="guide-icon"><i class="fa-solid fa-file-shield"></i></div>
+                    <h3>Startup Labor Compliance Checklist</h3>
+                    <p>A complete handbook detailing the registration steps, thresholds, and mandatory registries for early-stage companies in India.</p>
+                </div>
+                <a href="#" onclick="openPopup(); return false;" class="btn-download-guide">
+                    <i class="fa-solid fa-circle-down"></i> Download PDF
+                </a>
+            </div>
+            <!-- Card 2 -->
+            <div class="guide-card">
+                <div>
+                    <div class="guide-icon" style="background:#ecfdf5; color:#059669;"><i class="fa-solid fa-book-bookmark"></i></div>
+                    <h3>Factories Act Register Manual</h3>
+                    <p>Instructions on maintaining structural registers including adult worker logs, overtime cards, and accident reporting templates.</p>
+                </div>
+                <a href="#" onclick="openPopup(); return false;" class="btn-download-guide">
+                    <i class="fa-solid fa-circle-down"></i> Download PDF
+                </a>
+            </div>
+            <!-- Card 3 -->
+            <div class="guide-card">
+                <div>
+                    <div class="guide-icon" style="background:#fff7ed; color:#ea580c;"><i class="fa-solid fa-building-shield"></i></div>
+                    <h3>POSH Audit Toolkit 2026</h3>
+                    <p>A step-by-step checklist to perform an internal sexual harassment risk audit and structure an active Complaints Committee.</p>
+                </div>
+                <a href="#" onclick="openPopup(); return false;" class="btn-download-guide">
+                    <i class="fa-solid fa-circle-down"></i> Download PDF
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. FAQ Section -->
+    <section class="resource-section" id="faq">
+        <div class="section-title-box">
+            <h2>Frequently Asked Compliance Questions</h2>
+            <p>Quick reference answers for statutory threshold applicability and rules</p>
+        </div>
+
+        <div class="faq-wrapper">
+            <!-- FAQ 1 -->
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What is the applicability threshold for the Employees' Provident Fund (EPF) Act, 1952?</span>
+                    <i class="fa-solid fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    The EPF Act applies to any establishment that employs 20 or more people. In such cases, both the employer and employee share standard contributions (typically 12% of the basic salary + dearness allowance). For establishments with fewer than 20 employees, voluntary registration can be pursued.
+                </div>
+            </div>
+            <!-- FAQ 2 -->
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Under the POSH Act 2013, is it mandatory to have an Internal Complaints Committee (ICC)?</span>
+                    <i class="fa-solid fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    Yes, it is legally mandatory for any office, business, or commercial establishment employing 10 or more staff members to establish an Internal Complaints Committee (ICC). The committee must be headed by a senior woman employee and include an external independent member.
+                </div>
+            </div>
+            <!-- FAQ 3 -->
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What is the contribution rate and wage ceiling for Employees' State Insurance (ESI)?</span>
+                    <i class="fa-solid fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    The statutory contribution rate stands at 4.0% of gross wages (3.25% contributed by the employer and 0.75% by the employee). This is applicable for all employees whose gross monthly salary/wages do not exceed Rs. 21,000.
+                </div>
+            </div>
+            <!-- FAQ 4 -->
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>When is Gratuity payable to an employee and how is it calculated?</span>
+                    <i class="fa-solid fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    Gratuity is payable to an employee upon separation (due to resignation, retirement, or superannuation) after they have completed a minimum of 5 years of continuous service. It is calculated based on 15 days of the last-drawn basic wage for every completed year of service, capped up to a maximum limit of Rs. 20 Lakhs.
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    // FAQ Accordion toggling
+    document.querySelectorAll('.faq-question').forEach(button => {
+        button.addEventListener('click', () => {
+            const item = button.parentElement;
+            const isActive = item.classList.contains('active');
+
+            // Collapse other open FAQs
+            document.querySelectorAll('.faq-item').forEach(otherItem => {
+                otherItem.classList.remove('active');
+            });
+
+            // Toggle active state
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        });
+    });
+</script>
+{% endblock %}

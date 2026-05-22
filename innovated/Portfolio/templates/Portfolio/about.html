@@ -1,0 +1,331 @@
+{% extends 'Portfolio/base.html' %}
+
+{% block title %}About Us - InnovatedHRTECH{% endblock %}
+
+{% block content %}
+<style>
+    .about-container {
+        max-width: 1200px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 60px 20px;
+    }
+
+    .about-hero {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 60px;
+    }
+
+    .about-hero h1 {
+        font-size: 40px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 20px;
+    }
+
+    .about-hero p {
+        font-size: 18px;
+        color: #4b5563;
+        line-height: 1.6;
+    }
+
+    .about-section {
+        margin-bottom: 80px;
+        scroll-margin-top: 100px;
+    }
+
+    .about-card-section {
+        background: white;
+        border-radius: 20px;
+        border: 1px solid #e5e7eb;
+        padding: 40px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    }
+
+    .section-title {
+        font-size: 28px;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 24px;
+        border-left: 5px solid #7c3aed;
+        padding-left: 15px;
+    }
+
+    .vision-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+    }
+
+    .vision-box h3 {
+        font-size: 20px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .vision-box h3 i {
+        color: #7c3aed;
+    }
+
+    .vision-box p {
+        font-size: 15px;
+        color: #4b5563;
+        line-height: 1.7;
+    }
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+    }
+
+    .team-member-card {
+        background: #f9fafb;
+        border-radius: 16px;
+        border: 1px solid #e5e7eb;
+        padding: 30px 24px;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .team-member-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(109, 40, 217, 0.05);
+        border-color: #d8b4fe;
+    }
+
+    .member-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: #ede9fe;
+        color: #7c3aed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32px;
+        margin: 0 auto 20px;
+        border: 2px solid #ddd;
+    }
+
+    .team-member-card h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 6px;
+    }
+
+    .member-role {
+        font-size: 13px;
+        font-weight: 600;
+        color: #7c3aed;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .member-bio {
+        font-size: 14px;
+        color: #6b7280;
+        line-height: 1.6;
+    }
+
+    .testimonial-card {
+        background: #fdfdfd;
+        border-radius: 12px;
+        border: 1px solid #f3f4f6;
+        padding: 30px;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .testimonial-card::before {
+        content: '"';
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        font-size: 80px;
+        color: #e5e7eb;
+        font-family: Georgia, serif;
+        line-height: 1;
+        pointer-events: none;
+    }
+
+    .testimonial-text {
+        font-size: 15px;
+        color: #374151;
+        line-height: 1.7;
+        font-style: italic;
+        position: relative;
+        z-index: 1;
+        margin-bottom: 15px;
+    }
+
+    .testimonial-author {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .author-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #111827;
+    }
+
+    .author-company {
+        font-size: 12px;
+        color: #6b7280;
+    }
+
+    .careers-banner {
+        background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%);
+        border-radius: 20px;
+        padding: 40px;
+        color: white;
+        text-align: center;
+        box-shadow: 0 10px 25px rgba(109, 40, 217, 0.15);
+    }
+
+    .careers-banner h2 {
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .careers-banner p {
+        font-size: 16px;
+        opacity: 0.9;
+        margin-bottom: 25px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .btn-apply {
+        display: inline-block;
+        background: white;
+        color: #7c3aed;
+        padding: 12px 30px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+    .btn-apply:hover {
+        background: #f5f3ff;
+        transform: translateY(-2px);
+    }
+
+    @media(max-width: 768px) {
+        .vision-grid {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .about-hero h1 {
+            font-size: 32px;
+        }
+
+        .about-card-section {
+            padding: 24px;
+        }
+    }
+</style>
+
+<div class="about-container">
+    <div class="about-hero">
+        <h1>About InnovatedHRTECH</h1>
+        <p>Combining regulatory expertise with cloud technology to deliver premium Governance, Risk, and Compliance
+            (GRC) solutions across India.</p>
+    </div>
+
+    <section class="about-section about-card-section" id="vision">
+        <h2 class="section-title">Our Vision & Mission</h2>
+        <div class="vision-grid">
+            <div class="vision-box">
+                <h3><i class="fa-solid fa-bullseye"></i> Our Mission</h3>
+                <p>To streamline and automate statutory labour compliance calculations and filings for businesses. We
+                    build robust HR Tech products that reduce co-employer liabilities, simplify audits, and ensure
+                    transparent labour relationships.</p>
+            </div>
+            <div class="vision-box">
+                <h3><i class="fa-solid fa-eye"></i> Our Vision</h3>
+                <p>To become the leading platform for corporate statutory governance in India, enabling businesses of
+                    all sizes to navigate complex labour laws and operational safety codes confidently with single-click
+                    audits.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section" id="team">
+        <h2 class="section-title">Advisory Board</h2>
+        <div class="team-grid">
+            <div class="team-member-card">
+                <div class="member-avatar"><i class="fa-solid fa-gavel"></i></div>
+                <h3>Ms. Shivani Gupta</h3>
+                <span class="member-role">Managing Director</span>
+                <p class="member-bio">She has experience in legal advisory and compliance services, Payroll Management,
+                    Contractor Compliance and labour laws and statutory regulations.</p>
+                <p class="member-bio">She has experience in statutory compliance like PF,ESIC,PT,Gratutiy,Bonus ,TDS and audits  monthly contribution
+                    reconciliation, professional tax frameworks, and structuring compliant wage models.</p>
+            </div>
+            <div class="team-member-card">
+                <div class="member-avatar"><i class="fa-solid fa-building"></i></div>
+                <h3>Ms. Parvati Yadav</h3>
+                <span class="member-role">Managing Partner</span>
+                <p class="member-bio">She have expertise in designing and building GRC Saas Applications.</p>
+                <p class="member-bio">She has experience in Requirement, payroll Processing, TDS Compliance, POSH and Employee data
+                    Management</p>
+            </div>
+
+            <div class="team-member-card">
+                <div class="member-avatar"><i class="fa-solid fa-code"></i></div>
+                <h3>MR. Shivam Gupta</h3>
+                <span class="member-role">Management Partner</span>
+                <p class="member-bio">He have 4 + years of Experience in IT </p>
+                <p class="member-bio">He have expertise in designing and building Tech and Saas products.</p>
+            </div>
+        </div>
+    </section>
+<!--
+    <section class="about-section about-card-section" id="testimonials">
+        <h2 class="section-title">What Our Clients Say</h2>
+        <p>This is dummy data , we will update it soon</p>
+        <div class="testimonial-card">
+            <p class="testimonial-text">InnovatedHRTECH has completely transformed our contractor labour verification.
+                Using their GuardGate Portal, we reduced the audit timeline for our 1,200 contract workers from weeks to
+                a single day, eliminating co-employer compliance risks completely.</p>
+            <div class="testimonial-author">
+                <span class="author-name">Sanjay Nair</span>
+                <span class="author-company">Plant Operations Head, Apex Manufacturing</span>
+            </div>
+        </div>
+        <div class="testimonial-card">
+            <p class="testimonial-text">Our tech startup was struggling with multi-state Professional Tax filings and
+                POSH compliance training. The POSH Shield portal sensitized all 150 employees seamlessly and generated
+                completion certs automatically. Highly recommended!</p>
+            <div class="testimonial-author">
+                <span class="author-name">Neha Kapoor</span>
+                <span class="author-company">HR Director, CloudFlow Solutions</span>
+            </div>
+        </div>
+    </section>
+-->
+    <section class="about-section" id="careers">
+        <div class="careers-banner">
+            <h2>Join Our Growing Team</h2>
+            <p>We are always looking for passionate full-stack developers, statutory compliance auditors, and legal
+                consultants to help us automate corporate governance.</p>
+            <a href="#" onclick="openPopup(); return false;" class="btn-apply">Explore Open Positions</a>
+        </div>
+    </section>
+</div>
+{% endblock %}
