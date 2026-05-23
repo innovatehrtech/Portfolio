@@ -81,3 +81,5 @@ def products(request):
 
 def resources(request):
     return render(request, 'Portfolio/resources.html')
+
+

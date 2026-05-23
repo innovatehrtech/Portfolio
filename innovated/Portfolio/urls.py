@@ -15,4 +15,5 @@ urlpatterns = [
     path('search/', views.search_laws, name='search_laws'),
     path('products/', views.products, name='products'),
     path('resources/', views.resources, name='resources'),
+    
 ]
