@@ -6,20 +6,46 @@
 
 <section class="hero">
     <h1>
-        Compliance Risk Audit & Compliance Services
+        {% if service_page %}
+            {{ service_page.hero_title }}
+        {% else %}
+            Compliance Risk Audit & Compliance Services
+        {% endif %}
     </h1>
 
     <p style="font-size: 16px; margin-top: 15px; color: #555; max-width: 950px; margin-left: auto; margin-right: auto; line-height: 1.6;">
-        Comprehensive labour law due diligence, establishment, payroll, factory, 
-        and vendor compliance audit services designed to help organizations stay 
-        legally compliant, operationally efficient, and risk-free.
+        {% if service_page %}
+            {{ service_page.hero_description }}
+        {% else %}
+            Comprehensive labour law due diligence, establishment, payroll, factory, 
+            and vendor compliance audit services designed to help organizations stay 
+            legally compliant, operationally efficient, and risk-free.
+        {% endif %}
     </p>
 </section>
 
 <section class="domain-section">
 
     <div class="domain-grid" style="grid-template-columns: 1fr 1fr; gap: 18px;">
+        {% for card in service_page.cards.all %}
+        <div class="domain-card">
+            <i class="{{ card.icon_class }}"></i>
 
+            <h3>{{ card.title }}</h3>
+
+            <p style="font-size: 14px; line-height: 1.6; color: #555; margin-bottom: 12px;">
+                {{ card.content|linebreaks }}
+            </p>
+
+            {% if card.list_items.all %}
+            <ul style="font-size: 14px; line-height: 1.7; color: #555; margin-left: 18px;">
+                {% for item in card.list_items.all %}
+                <li>{{ item.text }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        {% empty %}
         <!-- Card 1 -->
         <div class="domain-card">
             <i class="fa-solid fa-shield-halved"></i>
@@ -27,7 +53,7 @@
             <h3>What is a Compliance Risk Audit?</h3>
 
             <p style="font-size: 14px; line-height: 1.6; color: #555; margin-bottom: 12px;">
-                A Compliance Risk Audit is a systematic assessment of an organization’s 
+                A Compliance Risk Audit is a systematic assessment of an organization's 
                 adherence to labour laws, statutory regulations, internal policies, 
                 and industry standards.
             </p>
@@ -181,7 +207,7 @@
                 <li>Dedicated Client Support Team</li>
             </ul>
         </div>
-
+        {% endfor %}
     </div>
 
     <!-- Bottom CTA -->
@@ -198,7 +224,7 @@
 
         <button class="enquire-btn" onclick="openPopup()" 
             style="padding: 10px 30px; font-size: 14px; border-radius: 8px;">
-            Request Audit
+            {% if service_page %}{{ service_page.cta_button_text }}{% else %}Request Audit{% endif %}
         </button>
     </div>
 

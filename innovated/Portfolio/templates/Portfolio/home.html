@@ -8,9 +8,13 @@
 <section class="hero">
 
     <h1>
-        Simplifying Compliance Through Our <br>
-        Expert <span>Governance, Risk & Compliance</span><br>
-        Knowledge Base
+        {% if home_page %}
+            {{ home_page.hero_title|linebreaks }}
+        {% else %}
+            Simplifying Compliance Through Our <br>
+            Expert <span>Governance, Risk & Compliance</span><br>
+            Knowledge Base
+        {% endif %}
     </h1>
 
     <form action="{% url 'search_laws' %}" method="GET" class="search-box">
@@ -30,7 +34,19 @@
     </h2>
 
     <div class="domain-grid">
-
+        {% for card in domain_cards %}
+        <div class="domain-card">
+            <i class="{{ card.icon_class }}"></i>
+            <h3>
+                {{ card.title|linebreaks }}
+            </h3>
+            {% if card.link_url %}
+            <a href="{{ card.link_url }}">
+                View Domain →
+            </a>
+            {% endif %}
+        </div>
+        {% empty %}
         <div class="domain-card">
             <i class="fa-solid fa-scale-balanced"></i>
             <h3>
@@ -63,7 +79,7 @@
                 View Domain →
             </a>
         </div>
-
+        {% endfor %}
     </div>
 
 </section>
@@ -75,7 +91,11 @@
         <div class="arrow left-arrow">
             ❮
         </div>
+        {% if home_page and home_page.banner_image_url %}
+        <img src="{{ home_page.banner_image_url }}">
+        {% else %}
         <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1400&auto=format&fit=crop">
+        {% endif %}
         <div class="arrow right-arrow">
             ❯
         </div>

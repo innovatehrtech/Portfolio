@@ -51,6 +51,19 @@
 <div class="services-section">
     <h1>Our Services</h1>
     <div class="services-grid">
+        {% for service in services %}
+        <div class="service-card">
+            <h3>{{ service.title }}</h3>
+            <p>{{ service.description }}</p>
+            {% if service.features.all %}
+            <ul>
+                {% for feature in service.features.all %}
+                <li>{{ feature.text }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        {% empty %}
         <div class="service-card">
             <h3>Compliance Management</h3>
             <p>End-to-end compliance solutions tailored to your industry needs.</p>
@@ -87,6 +100,7 @@
                 <li>Trend analysis</li>
             </ul>
         </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

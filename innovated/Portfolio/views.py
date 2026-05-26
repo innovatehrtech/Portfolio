@@ -1,7 +1,7 @@
 from django.db.models import Q
 # pyrefly: ignore [missing-import]
-from .models import ComplianceLaw
-from django.shortcuts import render, redirect
+from .models import ComplianceLaw, HomePage, DomainCard, AboutPage, TeamMember, Service, ServicePage
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 # pyrefly: ignore [missing-import]
 from .forms import BusinessEnquiryForm
@@ -28,19 +28,51 @@ def submit_enquiry(request):
     return redirect(request.META.get('HTTP_REFERER', 'home'))
 
 def home(request):
-    return render(request, 'Portfolio/home.html')
+    try:
+        home_page = HomePage.objects.first()
+    except HomePage.DoesNotExist:
+        home_page = None
+    
+    domain_cards = DomainCard.objects.all()
+    
+    context = {
+        'home_page': home_page,
+        'domain_cards': domain_cards,
+    }
+    return render(request, 'Portfolio/home.html', context)
 
 def about(request):
-    return render(request, 'Portfolio/about.html')
+    try:
+        about_page = AboutPage.objects.first()
+    except AboutPage.DoesNotExist:
+        about_page = None
+    
+    team_members = TeamMember.objects.all()
+    
+    context = {
+        'about_page': about_page,
+        'team_members': team_members,
+    }
+    return render(request, 'Portfolio/about.html', context)
 
 def services(request):
-    return render(request, 'Portfolio/services.html')
+    services_list = Service.objects.prefetch_related('features').all()
+    
+    context = {
+        'services': services_list,
+    }
+    return render(request, 'Portfolio/services.html', context)
 
 def contact(request):
     return render(request, 'Portfolio/contact.html')
 
 def compliance_risk_audit(request):
-    return render(request, 'Portfolio/compliance_risk_audit.html')
+    service_page = get_object_or_404(ServicePage, slug='compliance-risk-audit')
+    
+    context = {
+        'service_page': service_page,
+    }
+    return render(request, 'Portfolio/compliance_risk_audit.html', context)
 
 def establishment_compliances(request):
     return render(request, 'Portfolio/establishment_compliances.html')
