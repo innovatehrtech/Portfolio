@@ -5,7 +5,7 @@
 {% block content %}
 
 
-<section class="hero">
+<section class="hero" data-aos="fade-up" data-aos-duration="1000">
 
     <h1>
         {% if home_page %}
@@ -17,7 +17,7 @@
         {% endif %}
     </h1>
 
-    <form action="{% url 'search_laws' %}" method="GET" class="search-box">
+    <form action="{% url 'search_laws' %}" method="GET" class="search-box" data-aos="fade-up" data-aos-delay="200">
         <input type="text" name="q" placeholder="Search Act, Rules, etc...">
         <button type="submit" class="search-btn">
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -29,14 +29,15 @@
 
 <section class="domain-section">
 
-    <h2 class="domain-title">
+    <h2 class="domain-title" data-aos="fade-up">
         Most Viewed Domains
     </h2>
 
     <div class="domain-grid">
         {% for card in domain_cards %}
-        <div class="domain-card">
+        <div class="domain-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
             <i class="{{ card.icon_class }}"></i>
+
             <h3>
                 {{ card.title|linebreaks }}
             </h3>
@@ -47,7 +48,7 @@
             {% endif %}
         </div>
         {% empty %}
-        <div class="domain-card">
+        <div class="domain-card" data-aos="fade-up" data-aos-delay="100">
             <i class="fa-solid fa-scale-balanced"></i>
             <h3>
                 Labour, Employment &
@@ -58,7 +59,7 @@
             </a>
         </div>
 
-        <div class="domain-card">
+        <div class="domain-card" data-aos="fade-up" data-aos-delay="200">
             <i class="fa-solid fa-leaf"></i>
             <h3>
                 Environmental, Health &
@@ -69,7 +70,7 @@
             </a>
         </div>
 
-        <div class="domain-card">
+        <div class="domain-card" data-aos="fade-up" data-aos-delay="300">
             <i class="fa-solid fa-building-columns"></i>
             <h3>
                 Fiscal, Corporate &
@@ -87,7 +88,7 @@
 
 <section class="banner-section">
 
-    <div class="banner-box">
+    <div class="banner-box" data-aos="zoom-in" data-aos-duration="1000">
         <div class="arrow left-arrow">
             ❮
         </div>
