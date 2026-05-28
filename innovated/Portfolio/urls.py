@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path,include
 # pyrefly: ignore [missing-import]
 from . import views
 
@@ -15,5 +15,5 @@ urlpatterns = [
     path('search/', views.search_laws, name='search_laws'),
     path('products/', views.products, name='products'),
     path('resources/', views.resources, name='resources'),
-    
+    path('recruiter/', include('Recruiter.urls')),
 ]

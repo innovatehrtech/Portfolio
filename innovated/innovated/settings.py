@@ -14,6 +14,7 @@ from os import getenv
 from pathlib import Path
 from dotenv import load_dotenv
 
+
 import dj_database_url
 
 load_dotenv()
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'Portfolio',
+    'Recruiter'
 
 ]
 
