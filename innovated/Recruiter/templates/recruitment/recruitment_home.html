@@ -1,50 +1,218 @@
 {% extends 'Portfolio/base.html' %}
 
-{% block title %}Recruitment Services - InnovatedHRTECH{% endblock %}
+{% block title %}
+Recruitment Services
+{% endblock %}
 
 {% block content %}
 
-<section class="hero" data-aos="fade-up" data-aos-duration="1000">
-    <h1>
-        Recruitment Services
-    </h1>
-    <p style="font-size: 18px; color: #555; margin-top: 15px; max-width: 700px; margin-left: auto; margin-right: auto;">
-        Find the right talent for your organization across various domains and specializations
+<style>
+
+.hero{
+    padding:80px 20px;
+    text-align:center;
+    background:#eef2ff;
+}
+
+.hero h1{
+    font-size:55px;
+    margin-bottom:20px;
+}
+
+.hero p{
+    font-size:18px;
+    color:#555;
+}
+
+.domain-section{
+    padding:70px 8%;
+    background:#f5f7fb;
+}
+
+.domain-title{
+    text-align:center;
+    font-size:42px;
+    margin-bottom:50px;
+}
+
+.domain-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+    gap:30px;
+}
+
+.domain-card{
+    background:#fff;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 8px 25px rgba(0,0,0,0.08);
+    transition:0.4s;
+}
+
+.domain-card:hover{
+    transform:translateY(-8px);
+}
+
+.category-banner{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.card-content{
+    padding:25px;
+}
+
+.category-icon{
+    width:60px;
+    height:60px;
+    object-fit:cover;
+    border-radius:12px;
+    margin-bottom:15px;
+}
+
+.domain-card h3{
+    font-size:28px;
+    margin-bottom:12px;
+}
+
+.category-description{
+    color:#666;
+    line-height:1.7;
+    margin-bottom:20px;
+}
+
+.role-box{
+    padding:15px;
+    border:1px solid #eee;
+    border-radius:12px;
+    margin-bottom:15px;
+}
+
+.role-image{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+    border-radius:10px;
+    margin-bottom:12px;
+}
+
+.role-name{
+    font-size:20px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.role-description{
+    color:#555;
+    font-size:14px;
+    line-height:1.7;
+}
+
+.role-meta{
+    margin-top:10px;
+    font-size:13px;
+    color:#7c3aed;
+    font-weight:600;
+}
+
+@media(max-width:768px){
+
+    .hero h1{
+        font-size:38px;
+    }
+
+    .domain-title{
+        font-size:32px;
+    }
+
+}
+
+</style>
+
+<section class="hero">
+
+    <h1>Recruitment Services</h1>
+
+    <p>
+        Find the right talent for your organization across multiple domains.
     </p>
+
 </section>
 
 <section class="domain-section">
-    <h2 class="domain-title" data-aos="fade-up">
+
+    <h2 class="domain-title">
         Service Categories
     </h2>
 
     <div class="domain-grid">
-        {% for category in categories %}
-        <div class="domain-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
-            <i class="fa-solid fa-briefcase" style="color: #7c3aed; margin-bottom: 12px; font-size: 32px;"></i>
-            <h3>{{ category.name }}</h3>
 
-            {% if category.roles.all %}
-            <ul style="list-style: none; margin-top: 15px; padding: 0;">
-                {% for role in category.roles.all %}
-                <li style="padding: 8px 0; border-bottom: 1px solid #eee; font-size: 14px; color: #555; display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-chevron-right" style="color: #7c3aed; font-size: 10px;"></i>
-                    {{ role.role_name }}
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p style="color: #888; font-size: 14px; margin-top: 15px;">No roles available</p>
+        {% for category in categories %}
+
+        <div class="domain-card">
+
+            {% if category.banner_image %}
+            <img src="{{ category.banner_image.url }}"
+                 class="category-banner">
             {% endif %}
+
+            <div class="card-content">
+
+                {% if category.icon %}
+                <img src="{{ category.icon.url }}"
+                     class="category-icon">
+                {% endif %}
+
+                <h3>{{ category.name }}</h3>
+
+                <p class="category-description">
+                    {{ category.description }}
+                </p>
+
+                {% for role in category.roles.all %}
+
+                <div class="role-box">
+
+                    {% if role.image %}
+                    <img src="{{ role.image.url }}"
+                         class="role-image">
+                    {% endif %}
+
+                    <div class="role-name">
+                        {{ role.role_name }}
+                    </div>
+
+                    <div class="role-description">
+                        {{ role.description }}
+                    </div>
+
+                    <div class="role-meta">
+                        {{ role.hiring_type }}
+                        |
+                        {{ role.experience }}
+                    </div>
+
+                </div>
+
+                {% empty %}
+
+                <p>No roles available</p>
+
+                {% endfor %}
+
+            </div>
+
         </div>
+
         {% empty %}
-        <div class="domain-card" data-aos="fade-up" data-aos-delay="100">
-            <i class="fa-solid fa-briefcase" style="color: #7c3aed; margin-bottom: 12px; font-size: 32px;"></i>
-            <h3>No Categories Available</h3>
-            <p style="color: #888; font-size: 14px; margin-top: 15px;">Please check back later</p>
-        </div>
+
+        <h3>No Categories Found</h3>
+
         {% endfor %}
+
     </div>
+
 </section>
 
 {% endblock %}
