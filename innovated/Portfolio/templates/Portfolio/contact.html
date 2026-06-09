@@ -10,16 +10,19 @@
         margin: 0 auto;
     }
     .contact-section h1 {
-        color: #1a365d;
+        color: white;
         text-align: center;
         margin-bottom: 1rem;
         font-size: 28px;
     }
     .contact-form {
-        background: white;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         padding: 1.5rem;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     }
     .form-group {
         margin-bottom: 1rem;
@@ -27,70 +30,209 @@
     .form-group label {
         display: block;
         margin-bottom: 0.35rem;
-        color: #333;
+        color: white;
         font-weight: 500;
         font-size: 14px;
     }
     .form-group input,
+    .form-group select,
     .form-group textarea {
         width: 100%;
         padding: 0.6rem;
-        border: 1px solid #ddd;
-        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
         font-size: 14px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+    }
+    .form-group select option {
+        background: #667eea;
+        color: white;
     }
     .form-group textarea {
         min-height: 100px;
         resize: vertical;
     }
     .submit-button {
-        background: #f97316;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
         color: white;
         padding: 0.75rem 1.5rem;
-        border: none;
-        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
         font-size: 14px;
         cursor: pointer;
         width: 100%;
-        transition: background 0.3s;
+        transition: all 0.3s;
     }
     .submit-button:hover {
-        background: #ea580c;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
     }
     .contact-info {
         margin-top: 1.5rem;
         text-align: center;
-        color: #666;
+        color: rgba(255, 255, 255, 0.8);
         font-size: 14px;
+    }
+    .success-message {
+        background: rgba(34, 197, 94, 0.2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        color: white;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    .error-message {
+        background: rgba(239, 68, 68, 0.2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: white;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    .dynamic-fields {
+        display: none;
+        margin-top: 1rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .dynamic-fields.active {
+        display: block;
+        animation: fadeIn 0.3s ease-in;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 </style>
 
-<div class="contact-section">
+<div class="contact-section animate-fade-in-up">
     <h1>Contact Us</h1>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{ message.tags }}-message">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    
     <div class="contact-form">
-        <form method="post">
+        <form method="post" id="contactForm">
             {% csrf_token %}
+            
             <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" required>
+                <label for="{{ form.user_type.id_for_label }}">I am a:</label>
+                {{ form.user_type }}
             </div>
+            
             <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+                <label for="{{ form.name.id_for_label }}">Name *</label>
+                {{ form.name }}
             </div>
+            
             <div class="form-group">
-                <label for="subject">Subject</label>
-                <input type="text" id="subject" name="subject" required>
+                <label for="{{ form.email.id_for_label }}">Email *</label>
+                {{ form.email }}
             </div>
+            
             <div class="form-group">
-                <label for="message">Message</label>
-                <textarea id="message" name="message" required></textarea>
+                <label for="{{ form.phone.id_for_label }}">Phone *</label>
+                {{ form.phone }}
             </div>
-            <button type="submit" class="submit-button">Send Message</button>
+            
+            <!-- Student-specific fields -->
+            <div id="student-fields" class="dynamic-fields">
+                <div class="form-group">
+                    <label for="{{ form.university.id_for_label }}">University/College *</label>
+                    {{ form.university }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.course.id_for_label }}">Course/Degree *</label>
+                    {{ form.course }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.graduation_year.id_for_label }}">Graduation Year *</label>
+                    {{ form.graduation_year }}
+                </div>
+            </div>
+            
+            <!-- Employee-specific fields -->
+            <div id="employee-fields" class="dynamic-fields">
+                <div class="form-group">
+                    <label for="{{ form.company.id_for_label }}">Company Name *</label>
+                    {{ form.company }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.designation.id_for_label }}">Designation *</label>
+                    {{ form.designation }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.department.id_for_label }}">Department *</label>
+                    {{ form.department }}
+                </div>
+            </div>
+            
+            <!-- Customer-specific fields -->
+            <div id="customer-fields" class="dynamic-fields">
+                <div class="form-group">
+                    <label for="{{ form.company_name.id_for_label }}">Company Name *</label>
+                    {{ form.company_name }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.industry.id_for_label }}">Industry *</label>
+                    {{ form.industry }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.company_size.id_for_label }}">Company Size *</label>
+                    {{ form.company_size }}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.message.id_for_label }}">Message *</label>
+                {{ form.message }}
+            </div>
+            
+            <button type="submit" class="submit-button">Submit Inquiry</button>
         </form>
     </div>
     <div class="contact-info">
         <p>Or reach us directly at: info@innovatedhrtech.com</p>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const userTypeSelect = document.getElementById('{{ form.user_type.id_for_label }}');
+    const studentFields = document.getElementById('student-fields');
+    const employeeFields = document.getElementById('employee-fields');
+    const customerFields = document.getElementById('customer-fields');
+    
+    userTypeSelect.addEventListener('change', function() {
+        // Hide all dynamic fields
+        studentFields.classList.remove('active');
+        employeeFields.classList.remove('active');
+        customerFields.classList.remove('active');
+        
+        // Show relevant fields based on selection
+        if (this.value === 'Student') {
+            studentFields.classList.add('active');
+        } else if (this.value === 'Employee') {
+            employeeFields.classList.add('active');
+        } else if (this.value === 'Customer') {
+            customerFields.classList.add('active');
+        }
+    });
+});
+</script>
 {% endblock %}

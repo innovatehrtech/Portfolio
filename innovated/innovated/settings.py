@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'Portfolio',
-    'Recruiter'
+    'Recruiter',
+    'Details'
 
 ]
 

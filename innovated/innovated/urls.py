@@ -23,4 +23,5 @@ urlpatterns = [
     path('favicon.ico', RedirectView.as_view(url='/static/Portfolio/images/innovate.jpg')),
     path('', include('Portfolio.urls')),
     path('recruiter/', include('Recruiter.urls', namespace='recruiter')),
+    path('details/',include('Details.urls',namespace='details'))
 ]
